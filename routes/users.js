@@ -1,5 +1,4 @@
-const bcrypt = require ('bcrypt');
-
+const bcrypt = require ('bcrypt'); // bycript sirve para el hashing de contraseñas
 const {
   requireAuth,
   requireAdmin,
@@ -9,28 +8,72 @@ const {
   getUsers,
 } = require('../controller/users');
 
+const UserModel = require('../Squema/users')
+
+// const initAdminUser = (app, next) => {
+//   const { adminEmail, adminPassword } = app.get('config');
+//   if (!adminEmail || !adminPassword) {
+//     return next();
+//   }
+
+//   const adminUser = {
+//     email: adminEmail,
+//     password: bcrypt.hashSync(adminPassword, 10),
+//     roles: { admin: true },
+//   };
+//   // TODO: crear usuaria admin
+//   const UserModel = require('../Squema/users')
+//   // Primero ver si ya existe adminUser en base de datos
+//   // si no existe, hay que guardarlo
+//   // invocar conect
+//   // query de get
+//   // Función para inicializar un usuario administrador
+
+//   next();
+// };
+
 const initAdminUser = (app, next) => {
   const { adminEmail, adminPassword } = app.get('config');
+  
   if (!adminEmail || !adminPassword) {
     return next();
   }
 
+  const hashedPassword = bcrypt.hashSync(adminPassword, 10);
+
   const adminUser = {
     email: adminEmail,
-    password: bcrypt.hashSync(adminPassword, 10),
-    roles: { admin: true },
+    password: hashedPassword,
+    role: 'admin',
   };
 
-  // TODO: crear usuaria admin
-  // Primero ver si ya existe adminUser en base de datos
-  // si no existe, hay que guardarlo
+  UserModel.findOne({ email:"anita.borg@systers.xyz" }).exec().then(data => {
+    console.log(data);});
+  
+  //    (err, existingUser) => {
+  //   if (err) {
+  //     console.error('Error al buscar el usuario administrador:', err);
+  //     return next(500);
+  //   }
 
-  next();
+  //   if (!existingUser) {
+  //     UserModel.create(adminUser, (createErr, newUser) => {
+  //       if (createErr) {
+  //         console.error('Error al crear el usuario administrador:', createErr);
+  //         return next(500);
+  //       }
+  //       console.log('Usuario administrador creado con éxito:', newUser);
+  //       next();
+  //     });
+  //   } else {
+  //     console.log('El usuario administrador ya existe en la base de datos.');
+  //     next();
+  //   }
+  // }
+  //);
 };
-
 /*
  * Diagrama de flujo de una aplicación y petición en node - express :
- *
  * request  -> middleware1 -> middleware2 -> route
  *                                             |
  * response <- middleware4 <- middleware3   <---

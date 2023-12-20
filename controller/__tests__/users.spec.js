@@ -3,7 +3,7 @@ const {
 } = require('../users');
 
 describe('getUsers', () => {
-  it('should get users collection', (done) => {
+  test('should get users collection', (done) => {
     done();
   });
 });

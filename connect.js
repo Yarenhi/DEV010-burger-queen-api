@@ -12,7 +12,7 @@ async function connect() {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    console.log('Conexión a la base de datos exitosa con Mongoose');
+    console.log('Conexión a la base de datos exitosa');
 
     // Aquí puedes realizar operaciones con Mongoose
 
